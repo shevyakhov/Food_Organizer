@@ -1,3 +1,35 @@
 <resources>
-    <string name="app_name">Food Organizer</string>
+	<string name="main_food_list">Главная</string>
+	<string name="main_recipes">Рецепты</string>
+	<string name="main_to_buy_list">Покупки</string>
+	<string name="main_profile">Профиль</string>
+
+	<string name="app_name">Food Organizer</string>
+	<string name="introFirstMain">Храните информацию о продуктах!</string>
+	<string name="introSecondMain">Добавляйте рецепты!</string>
+	<string name="introThirdMain">Планируйте покупки!</string>
+	<string name="introFirstSub">Следите за сроком годности с помощью напоминаний</string>
+	<string name="introSecondSub">А также смотрите наличие продуктов для них</string>
+	<string name="introThirdSub">И контролируйте их с помошью напоминаний</string>
+	<string name="buttonRegister">Зарегистрироваться</string>
+	<string name="editTextName">Имя</string>
+	<string name="TextViewRegistration">Регистрация</string>
+	<string name="inputIncorrect">Имя должно состоять только из букв</string>
+	<string name="addManually">Вручную</string>
+	<string name="addWithScanner">Через чек</string>
+	<string name="cancel">Отмена</string>
+	<string name="add">Добавить</string>
+	<string name="addFood">Добавить продукт</string>
+	<string name="foodName">Название</string>
+	<string name="placement">Расположение</string>
+	<string name="quantity">Количество</string>
+	<string name="plus_sign">+</string>
+	<string name="bestBefore">Годен до</string>
+	<string name="start">Начать</string>
+	<string name="next">Далее</string>
+	<string name="addProduct">Добавить продукт</string>
+	<string name="chooseWayToAdd">Выберите способ добавления</string>
+	<string name="reminder1DayBefore">За 1 день</string>
+	<string name="reminder2DayBefore">За 2 дня</string>
+	<string name="reminder">Напоминание об истечении срока годности</string>
 </resources>

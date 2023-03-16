@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="Widget.MyTheme.PrimaryButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+		<item name="android:textAppearance">?attr/textAppearanceBody1</item>
+		<item name="rippleColor">?attr/colorPrimaryVariant</item>
+		<item name="android:paddingBottom">16dp</item>
+		<item name="android:paddingTop">16dp</item>
+		<item name="android:paddingStart">16dp</item>
+		<item name="android:paddingEnd">16dp</item>
+		<item name="android:insetTop">0dp</item>
+		<item name="android:insetBottom">0dp</item>
+	</style>
+
+	<!--Secondary Button-->
+	<style name="Widget.MyTheme.SecondaryButton" parent="Widget.MyTheme.PrimaryButton">
+		<item name="backgroundTint">?attr/colorSecondary</item>
+		<item name="rippleColor">?attr/colorSecondaryVariant</item>
+		<item name="android:textColor">?attr/colorOnBackground</item>
+	</style>
+</resources>
