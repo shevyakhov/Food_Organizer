@@ -7,9 +7,12 @@ import com.chelz.foodorganizer.utils.navigators.GlobalNavigator
 import com.chelz.foodorganizer.utils.navigators.GlobalNavigatorDefault
 import com.chelz.foodorganizer.utils.navigators.MainNavigator
 import com.chelz.foodorganizer.utils.navigators.MainNavigatorDefault
+import com.chelz.foodorganizer.utils.notifications.ExpireBroadcastReceiver
+import com.chelz.foodorganizer.utils.notifications.LocalNotificationManager
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -36,6 +39,9 @@ val AppModule = module {
 	single(named(MAIN)) { get<Cicerone<Router>>(named(MAIN)).router }
 	single(named(MAIN)) { get<Cicerone<Router>>(named(MAIN)).getNavigatorHolder() }
 	single<MainNavigator> { MainNavigatorDefault(get(named(MAIN))) }
+
+	singleOf(::LocalNotificationManager)
+	singleOf(::ExpireBroadcastReceiver)
 
 	viewModel { MainActivityViewModel(navigator = get()) }
 }

@@ -4,24 +4,22 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.chelz.foodorganizer.databinding.FoodListItemBinding
 import com.chelz.foodorganizer.screens.foodList.presentation.FoodListViewModel
-import java.sql.Timestamp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.Duration
 import java.util.Calendar
 
 class FoodListAdapter(
 	private val viewModel: FoodListViewModel,
-	private val lifecycleOwner: LifecycleOwner,
 	private val foodItemClick: (id: FoodListItem) -> Unit,
-
-	) : ListAdapter<FoodListItem, FoodListAdapter.FoodListHolder>(FoodListDiffCallback) {
+) : ListAdapter<FoodListItem, FoodListAdapter.FoodListHolder>(FoodListDiffCallback) {
 
 	inner class FoodListHolder(
 		private val binding: FoodListItemBinding,
@@ -29,63 +27,49 @@ class FoodListAdapter(
 	) : RecyclerView.ViewHolder(binding.root) {
 
 		@SuppressLint("SetTextI18n")
-		fun bind(viewModel: FoodListViewModel, viewLifecycleOwner: LifecycleCoroutineScope, item: FoodListItem) {
-			when (item.id) {
-				1 -> {
-					Glide
-						.with(viewModel.app)
-						.load("https://ferma-m2.ru/images/news/news_list_big/crop_moloko.jpg")
-						.centerCrop()
-						.into(binding.icon)
-				}
-
-				2 -> {
-					Glide
-						.with(viewModel.app)
-						.load("https://bonduelle.ru/upload/iblock/4f0/4f0d9d57952b8d2ef430a59d2a580547.jpg")
-						.centerCrop()
-						.into(binding.icon)
-				}
-
-				3 -> {
-					Glide
-						.with(viewModel.app)
-						.load("https://moreodor.ru/wp-content/uploads/2020/07/calmar-loligo-800.png")
-						.centerCrop()
-						.into(binding.icon)
-				}
-
-				4 -> {
-					Glide
-						.with(viewModel.app)
-						.load("https://ir.ozone.ru/s3/club-storage/images/article_image_1632x1000/313/8b2c09bc-abdc-4889-b4ff-bd8225dcd1ec.jpeg")
-						.centerCrop()
-						.into(binding.icon)
-				}
-
-				5 -> {
-					Glide
-						.with(viewModel.app)
-						.load("https://upload.wikimedia.org/wikipedia/commons/5/5a/Oranges_and_orange_juice.jpg")
-						.centerCrop()
-						.into(binding.icon)
-				}
-			}
-
-
+		fun bind(viewModel: FoodListViewModel, item: FoodListItem) {
+			Glide
+				.with(binding.root.context)
+				.load(item.imageRes)
+				.centerCrop()
+				.into(binding.icon)
 			binding.name.text = item.name
-			binding.foodPlacement.text = item.placement
-			binding.progressBar.max = 100
-			binding.progressBar.progress = kotlin.random.Random.nextInt(0, 100)
-			binding.progressBar.setIndicatorColor((if (binding.progressBar.progress > 70) Color.RED else Color.BLUE))
-			val date = item.bestBefore
-			Timestamp(item.bestBefore.time)
-			val cal = Calendar.getInstance().apply {
-				time = date
+			CoroutineScope(Dispatchers.Main).launch {
+				binding.foodPlacement.text = viewModel.getPlacement(item.placement).placementName
+				binding.remainingCount.text = "${item.itemCount} кг"
 			}
-			binding.remainingCount.text = "${item.itemCount.itemCount} ${item.itemCount.prefix}"
-			binding.remainingTime.text = "до " + cal.get(Calendar.DAY_OF_MONTH).toString() + "/" + cal.get(Calendar.MONTH)
+			val date = item.bestBefore
+			if (date != null) {
+				Calendar.getInstance().apply { time.time = date }
+				val now = System.currentTimeMillis()
+				val diff = Duration.ofMillis(date - now).toDays()
+				binding.remainingTime.text = when {
+					diff > 0   -> {
+						"Осталось $diff дней"
+					}
 
+					diff == 0L -> {
+						"Завтра просрочится!"
+					}
+
+					else       -> {
+						"Просрочен"
+					}
+				}
+				binding.progressBar.max = 100
+				binding.progressBar.progress = (100 - diff * 10).toInt()
+
+				binding.progressBar.setIndicatorColor((if (binding.progressBar.progress > 70) {
+					Color.parseColor("#BA1A1A")
+				} else {
+					Color.parseColor("#415AA9")
+				}))
+				binding.progressBar.trackColor = (if (binding.progressBar.progress > 70) {
+					Color.parseColor("#1ABA1A1A")
+				} else {
+					Color.parseColor("#1A415AA9")
+				})
+			}
 			binding.root.setOnClickListener {
 				itemClick.invoke(item)
 			}
@@ -105,7 +89,7 @@ class FoodListAdapter(
 	}
 
 	override fun onBindViewHolder(holder: FoodListHolder, position: Int) {
-		holder.bind(viewModel, lifecycleOwner.lifecycleScope, getItem(position))
+		holder.bind(viewModel, getItem(position))
 	}
 
 	private object FoodListDiffCallback : DiffUtil.ItemCallback<FoodListItem>() {

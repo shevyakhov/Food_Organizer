@@ -61,4 +61,8 @@
     <color name="dark_surfaceTintColor">#B5C4FF</color>
     <color name="white">#fff</color>
     <color name="black">#111</color>
+    <color name="grey">#F5F5F5</color>
+    <color name="grey_dark">#EBEBEB</color>
+    <color name="red">#FF3E3E</color>
+    <color name="green">#E6F4F1</color>
 </resources>

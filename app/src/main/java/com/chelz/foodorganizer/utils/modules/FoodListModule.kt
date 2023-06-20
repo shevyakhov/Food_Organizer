@@ -8,7 +8,8 @@ val FoodListModule = module {
 	viewModel {
 		FoodListViewModel(
 			navigator = get(),
-			app = get()
+			app = get(),
+			repository = get()
 		)
 	}
 }

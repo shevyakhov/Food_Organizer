@@ -9,7 +9,7 @@ class FoodListFragmentNavigatorDefault(
 ) : FoodListFragmentNavigator {
 
 	override fun goToFoodDetails(id: Int) {
-		navigator.open(FoodDetailsIndex)
+		navigator.open(FoodDetailsIndex(id))
 	}
 
 	override fun goToAddFood() {

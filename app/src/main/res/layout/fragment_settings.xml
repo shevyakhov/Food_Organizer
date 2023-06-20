@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/green"
+	tools:context=".screens.settings.ui.SettingsFragment">
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/topAppBarLayout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_constraintTop_toTopOf="parent">
+
+
+		<com.google.android.material.appbar.MaterialToolbar
+			android:id="@+id/topAppBar"
+			style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			app:title="@string/settings" />
+
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/white"
+		android:orientation="vertical"
+		android:padding="20dp"
+		app:layout_constraintTop_toBottomOf="@id/topAppBarLayout">
+
+		<LinearLayout
+			android:id="@+id/layoutNotificationSettings"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/textNotificationSettings"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/when_notify" />
+
+			<TextView
+				android:id="@+id/timePicker"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:background="@drawable/borders_5dp"
+				android:gravity="center"
+				android:hint="@string/time_when_notify"
+				android:padding="5dp" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/layoutToBuyListSettings"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/textToBuyListSettings"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/main_to_buy_list" />
+
+			<androidx.appcompat.widget.SwitchCompat
+				android:id="@+id/toBuyListCheck"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:background="@drawable/borders_5dp"
+				android:gravity="center"
+				android:padding="5dp"
+				android:text="@string/suggest_adding_food" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/layoutPlacementTypes"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/textPlacementTypes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/placement" />
+
+			<HorizontalScrollView
+				android:id="@+id/foodPlacementScroll"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintBottom_toBottomOf="@id/foodPlacementText"
+				app:layout_constraintEnd_toEndOf="@id/foodNameLayout"
+				app:layout_constraintStart_toStartOf="@id/foodNameLayout"
+				app:layout_constraintTop_toTopOf="@id/foodPlacementText">
+
+				<com.google.android.material.chip.ChipGroup
+					android:id="@+id/chip_group_placement"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="bottom"
+					app:chipSpacingHorizontal="4dp">
+
+					<com.google.android.material.chip.Chip
+						android:id="@+id/addPlacementChip"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/plus_sign"
+						app:chipBackgroundColor="?attr/colorSecondary" />
+				</com.google.android.material.chip.ChipGroup>
+			</HorizontalScrollView>
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/layoutRecipeTypes"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="20dp"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/textLayoutRecipeTypes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/recipeType" />
+
+			<HorizontalScrollView
+				android:id="@+id/recipeTypeScroll"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintBottom_toBottomOf="@id/foodPlacementText"
+				app:layout_constraintEnd_toEndOf="@id/foodNameLayout"
+				app:layout_constraintStart_toStartOf="@id/foodNameLayout"
+				app:layout_constraintTop_toTopOf="@id/foodPlacementText">
+
+				<com.google.android.material.chip.ChipGroup
+					android:id="@+id/chip_group_recipe_type"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="bottom"
+					app:chipSpacingHorizontal="4dp">
+
+					<com.google.android.material.chip.Chip
+						android:id="@+id/add_recipe_type_chip"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/plus_sign"
+						app:chipBackgroundColor="?attr/colorSecondary" />
+				</com.google.android.material.chip.ChipGroup>
+			</HorizontalScrollView>
+		</LinearLayout>
+
+	</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

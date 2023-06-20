@@ -1,0 +1,127 @@
+<!-- custom_dialog_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="20dp">
+
+	<com.google.android.material.textfield.TextInputLayout
+		style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp">
+
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/foodName"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/editTextName"
+			android:maxLength="15"
+			android:maxLines="1"
+			android:singleLine="true" />
+	</com.google.android.material.textfield.TextInputLayout>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp">
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:id="@+id/quantityLayout"
+			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@id/savedQuantity"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/quantity"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/added_quantity"
+				android:inputType="number|numberDecimal"
+				android:maxLength="15"
+				android:maxLines="1"
+				android:singleLine="true"
+				android:textSize="13sp" />
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<TextView
+			android:id="@+id/savedQuantity"
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_marginHorizontal="20dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@id/quantityLayout"
+			app:layout_constraintTop_toTopOf="parent" />
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp"
+		android:text="@string/placement" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:layout_marginTop="5dp"
+		android:background="@drawable/borders_5dp"
+		android:orientation="vertical"
+		android:padding="10dp">
+
+		<Spinner
+			android:id="@+id/spinner"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	</LinearLayout>
+
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/searchButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:text="@string/searchRealFood"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@id/checkbox"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<CheckBox
+			android:id="@+id/checkbox"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:clickable="false"
+			android:focusable="false"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@id/searchButton"
+			app:layout_constraintTop_toTopOf="parent" />
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+	<Button
+		android:id="@+id/addButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/addFood" />
+
+	<Button
+		android:id="@+id/cancelButton"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:backgroundTint="?attr/colorError"
+		android:text="@string/cancel" />
+</LinearLayout>

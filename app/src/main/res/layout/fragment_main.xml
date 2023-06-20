@@ -7,15 +7,16 @@
 	android:background="@color/white"
 	tools:context=".application.mainFragment.ui.MainFragment">
 
-	<FrameLayout
+	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
 		<FrameLayout
 			android:id="@+id/host_main"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_marginBottom="62dp"
+			android:layout_height="0dp"
+			app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+			app:layout_constraintTop_toTopOf="parent"
 			tools:ignore="FragmentTagUsage" />
 
 		<com.google.android.material.bottomnavigation.BottomNavigationView
@@ -28,6 +29,7 @@
 			android:visibility="visible"
 			app:itemIconSize="25dp"
 			app:labelVisibilityMode="labeled"
+			app:layout_constraintBottom_toBottomOf="parent"
 			app:menu="@menu/menu_main" />
-	</FrameLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

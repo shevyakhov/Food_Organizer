@@ -4,23 +4,25 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/background"
 	android:layout_width="match_parent"
-	android:layout_height="100dp"
+	android:layout_height="130dp"
 	android:layout_marginHorizontal="20dp"
 	android:padding="5dp">
 
 	<ImageView
 		android:id="@+id/icon"
-		android:layout_width="100dp"
+		android:layout_width="120dp"
 		android:layout_height="0dp"
 		android:background="@drawable/borders_5dp"
 		android:padding="1dp"
 		android:scaleType="fitXY"
+		app:layout_constraintEnd_toStartOf="@id/data"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		tools:src="@drawable/ic_launcher_background" />
 
 	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/data"
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
 		android:layout_marginStart="20dp"
@@ -30,9 +32,9 @@
 
 		<TextView
 			android:id="@+id/name"
-			android:textStyle="bold"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:textStyle="bold"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			tools:text="@string/main_profile" />
@@ -51,7 +53,6 @@
 			android:id="@+id/progressBar"
 			android:layout_width="match_parent"
 			android:layout_height="4dp"
-			android:background="@color/dark_primary"
 			app:layout_constraintBottom_toTopOf="@id/remainingCount"
 			app:layout_constraintStart_toStartOf="@id/foodPlacement"
 			app:layout_constraintTop_toBottomOf="@id/foodPlacement" />

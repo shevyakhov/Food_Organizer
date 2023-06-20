@@ -1,36 +1,36 @@
 package com.chelz.foodorganizer.screens.addFood.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.view.children
+import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.chelz.foodorganizer.R
 import com.chelz.foodorganizer.databinding.FragmentAddFoodBinding
 import com.chelz.foodorganizer.screens.addFood.presentation.AddFoodViewModel
-import com.chelz.foodorganizer.screens.foodList.ui.recycler.FoodListItem
-import com.chelz.foodorganizer.screens.foodList.ui.recycler.ItemCount
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
+import com.chelz.foodorganizer.utils.chip.createChip
+import com.chelz.foodorganizer.utils.decodeByteArray
+import com.chelz.foodorganizer.utils.flowBinders.bindFlow
+import com.chelz.foodorganizer.utils.getOrientation
+import com.chelz.foodorganizer.utils.textListeners.bindDateListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class AddFoodFragment : Fragment() {
 
@@ -57,11 +57,20 @@ class AddFoodFragment : Fragment() {
 	private val pickPictureLauncher: ActivityResultLauncher<String> =
 		registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 			if (uri != null) {
-				binding.foodIcon.setImageURI(uri)
-				val byteArray = requireContext().contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
-				val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray?.size ?: 0)
-			} else {
-				Log.e("sad", "asd")
+				Glide
+					.with(requireContext())
+					.load(uri)
+					.centerCrop()
+					.into(binding.foodIcon)
+
+				val stream = requireContext().contentResolver.openInputStream(uri)
+				val byteArray = stream?.use { it.readBytes() }
+				val exif = stream?.let {
+					ExifInterface(it)
+				}
+				val orientation = getOrientation(exif)
+				val resizedImageByteArray = orientation?.let { decodeByteArray(byteArray, it) }
+				viewModel.imageFlow.value = resizedImageByteArray
 			}
 		}
 
@@ -76,6 +85,12 @@ class AddFoodFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		binding.foodName.bindFlow(lifecycleScope, viewModel.nameFlow)
+		binding.quantity.bindFlow(lifecycleScope, viewModel.quantityFlow)
+
+		CoroutineScope(Dispatchers.IO).launch {
+			viewModel.init()
+		}
 		binding.foodIcon.setOnClickListener {
 			activity?.let {
 				if (hasPermissions(activity as Context, PERMISSIONS)) {
@@ -85,102 +100,45 @@ class AddFoodFragment : Fragment() {
 				}
 			}
 		}
-		/*// add chip group dynamically
-		item.itemData.projectTags.forEach { tagName ->
-			binding.tagChipGroup.addView(createTagChip(context, tagName))
-		}*/
 
+		viewModel.everyPlacementFlow.onEach { list ->
+			for (i in list) {
+				val chip = createChip(requireContext(), i.placementName)
+				chip.bindFlow(lifecycleScope, viewModel.placementFlow)
+				binding.chipGroupPlacement.addView(chip, 0)
+			}
+		}.launchIn(lifecycleScope)
 
 		binding.addPlacementChip.setOnClickListener {
-			addChip("Добавить расположение", "Расположение", binding.chipGroupPlacement)
-
-		}
-		binding.addQuantityPrefixChip.setOnClickListener {
-			addChip("Добавить единицу измерения", "Единица измерения", binding.chipGroupQuantityPrefix)
-		}
-		binding.addButton.setOnClickListener {
-			val chipPlacement = binding.chipGroupPlacement.children.toList().filter { (it as Chip).isChecked }
-			val chipPrefix = binding.chipGroupQuantityPrefix.children.toList().filter { (it as Chip).isChecked }
-			val foodName = binding.foodName.text.toString().ifEmpty { null }
-			val chipPlacementText = if (chipPlacement.isNotEmpty()) {
-				(chipPlacement.first() as TextView).text
-			} else {
-				null
-			}
-			val chipPrefixText = if (chipPrefix.isNotEmpty()) {
-				(chipPrefix.first() as TextView).text
-			} else {
-				null
-			}
+			addPlacementChip()
 		}
 
 		binding.bestBefore.apply {
-			addTextChangedListener(viewModel.getDateListener(this))
+			addTextChangedListener(bindDateListener(this))
 		}
-		requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-			viewModel.navigateWithChanges(getItemFromInput())
-		}
-	}
-
-	private fun getItemFromInput(): FoodListItem {
-		return FoodListItem(
-			1,
-			binding.foodName.text.toString(),
-			getPlacement(),
-			getCount(),
-			getDate(),
-			12
-		)
-	}
-
-	@SuppressLint("SimpleDateFormat")
-	private fun getDate(): Date {
-		val splitDate = binding.bestBefore.text.toString().split("/")
-		return SimpleDateFormat("dd/MM/yyyy").parse(binding.bestBefore.text.toString()) ?: Date()
-	}
-
-	private fun getCount(): ItemCount {
-		var prefix = ""
-		for (i in binding.chipGroupQuantityPrefix.children) {
-			if ((i as Chip).isChecked) {
-				prefix = i.text.toString()
+		binding.addButton.setOnClickListener {
+			CoroutineScope(Dispatchers.IO).launch {
+				viewModel.bestBeforeFlow.value = binding.bestBefore.text.toString()
+				viewModel.addItem()
 			}
 		}
-		return ItemCount(binding.quantity.text.toString(), prefix)
+		binding.reminder1DayBefore.bindFlow(lifecycleScope, viewModel.reminderFlow)
+		binding.reminder2DayBefore.bindFlow(lifecycleScope, viewModel.reminderFlow)
 	}
 
-	private fun getPlacement(): String {
-		for (i in binding.chipGroupPlacement.children) {
-			if ((i as Chip).isChecked) {
-				return i.text.toString()
-			}
-		}
-		return ""
-	}
-
-	@SuppressLint("ResourceType")
-	private fun createTagChip(context: Context, chipName: String): Chip {
-		return Chip(context).apply {
-			text = chipName
-			isCheckable = true
-			isCheckedIconVisible = true
-		}
-	}
-
-	private fun addChip(title: String, hintText: String, chipGroup: ChipGroup) {
-		val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-		builder.setTitle(title)
+	private fun addPlacementChip() {
+		val builder = MaterialAlertDialogBuilder(requireContext())
+		builder.setTitle("Добавить расположение")
 		val input = EditText(requireContext())
-		input.hint = hintText
+		input.hint = "Расположение"
 		input.inputType = InputType.TYPE_CLASS_TEXT
 		builder.setView(input)
 
 		builder.setPositiveButton(getString(R.string.add)) { _, _ ->
-			val chip = createTagChip(requireContext(), input.text.toString())
-			chip.setOnClickListener {
-				Toast.makeText(requireContext(), input.text.toString(), Toast.LENGTH_SHORT).show()
-			}
-			chipGroup.addView(chip, 0)
+			val chip = createChip(requireContext(), input.text.toString())
+			binding.chipGroupPlacement.addView(chip, 0)
+			chip.bindFlow(lifecycleScope, viewModel.placementFlow)
+			chip.isChecked = true
 		}
 		builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.cancel() }
 		builder.show()
@@ -196,4 +154,3 @@ class AddFoodFragment : Fragment() {
 		_binding = null
 	}
 }
-

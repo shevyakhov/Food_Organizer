@@ -54,12 +54,13 @@ class MainFragment : Fragment() {
 
 
 		binding.bottomNavigation.setOnItemSelectedListener {
-			when (it.itemId) {
-				R.id.foodList  -> viewModel.navigateToFoodList()
-				R.id.recipes   -> viewModel.navigateToRecipes()
-				R.id.toBuyList -> viewModel.navigateToToBuyList()
-				R.id.profile   -> viewModel.navigateToProfile()
-			}
+			if (binding.bottomNavigation.selectedItemId != it.itemId)
+				when (it.itemId) {
+					R.id.foodList  -> viewModel.navigateToFoodList()
+					R.id.recipes   -> viewModel.navigateToRecipes()
+					R.id.toBuyList -> viewModel.navigateToToBuyList()
+					R.id.profile   -> viewModel.navigateToProfile()
+				}
 			true
 		}
 	}

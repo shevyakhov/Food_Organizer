@@ -18,4 +18,5 @@
 		<item name="rippleColor">?attr/colorSecondaryVariant</item>
 		<item name="android:textColor">?attr/colorOnBackground</item>
 	</style>
+
 </resources>
