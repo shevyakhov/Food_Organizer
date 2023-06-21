@@ -2,7 +2,6 @@ package com.chelz.foodorganizer.screens.recipes.domain
 
 import com.chelz.foodorganizer.screens.foodList.data.dao.FoodRecipeJunctionEntity
 import com.chelz.foodorganizer.screens.foodList.data.dao.RecipeWithFood
-import com.chelz.foodorganizer.screens.recipes.data.LocalRecipesDataSource
 import com.chelz.foodorganizer.screens.recipes.data.dao.RecipeEntity
 import com.chelz.foodorganizer.screens.recipes.data.dao.RecipeTypeEntity
 
@@ -74,6 +73,6 @@ class RecipesRepositoryDefault(private val localDataSource: LocalRecipesDataSour
 		localDataSource.deleteFoodRecipeJunctionEntity(recipeId, foodId)
 	}
 
-	override suspend fun getFoodRecipeJunctionEntity(recipeId: Int): List<FoodRecipeJunctionEntity> =
-		localDataSource.getFoodRecipeJunctionEntity(recipeId)
+	override suspend fun getFoodRecipeJunctionEntity(id: Int): List<FoodRecipeJunctionEntity> =
+		localDataSource.getFoodRecipeJunctionEntity(id)
 }

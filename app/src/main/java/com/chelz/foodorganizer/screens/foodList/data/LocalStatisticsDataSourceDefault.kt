@@ -2,6 +2,7 @@ package com.chelz.foodorganizer.screens.foodList.data
 
 import com.chelz.foodorganizer.screens.foodList.data.dao.StatisticsDao
 import com.chelz.foodorganizer.screens.foodList.data.dao.StatisticsEntity
+import com.chelz.foodorganizer.screens.foodList.domain.LocalStatisticsDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

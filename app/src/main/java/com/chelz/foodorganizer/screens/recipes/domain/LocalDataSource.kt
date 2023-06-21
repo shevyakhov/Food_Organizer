@@ -1,7 +1,5 @@
-package com.chelz.foodorganizer.screens.recipes.data
+package com.chelz.foodorganizer.screens.recipes.domain
 
-import androidx.room.Query
-import androidx.room.Transaction
 import com.chelz.foodorganizer.screens.foodList.data.dao.FoodRecipeJunctionEntity
 import com.chelz.foodorganizer.screens.foodList.data.dao.RecipeWithFood
 import com.chelz.foodorganizer.screens.recipes.data.dao.RecipeEntity

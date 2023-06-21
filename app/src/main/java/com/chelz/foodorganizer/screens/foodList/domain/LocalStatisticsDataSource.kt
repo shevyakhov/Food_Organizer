@@ -1,4 +1,4 @@
-package com.chelz.foodorganizer.screens.foodList.data
+package com.chelz.foodorganizer.screens.foodList.domain
 
 import com.chelz.foodorganizer.screens.foodList.data.dao.StatisticsEntity
 
