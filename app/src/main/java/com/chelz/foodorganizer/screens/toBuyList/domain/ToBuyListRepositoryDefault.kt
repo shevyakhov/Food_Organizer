@@ -1,9 +1,8 @@
 package com.chelz.foodorganizer.screens.toBuyList.domain
 
-import com.chelz.foodorganizer.screens.foodList.data.LocalFoodDataSource
+import com.chelz.foodorganizer.screens.foodList.domain.LocalFoodDataSource
 import com.chelz.foodorganizer.screens.foodList.data.dao.FoodEntity
 import com.chelz.foodorganizer.screens.foodList.data.dao.PlacementEntity
-import com.chelz.foodorganizer.screens.toBuyList.data.LocalToBuyListDataSource
 import com.chelz.foodorganizer.screens.toBuyList.data.dao.ToBuyListEntity
 
 class ToBuyListRepositoryDefault(private val localToBuyListDataSource: LocalToBuyListDataSource, private val localFoodDataSource: LocalFoodDataSource) :

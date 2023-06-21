@@ -1,4 +1,4 @@
-package com.chelz.foodorganizer.screens.toBuyList.data
+package com.chelz.foodorganizer.screens.toBuyList.domain
 
 import com.chelz.foodorganizer.screens.toBuyList.data.dao.ToBuyListEntity
 

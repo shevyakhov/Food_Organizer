@@ -1,14 +1,14 @@
 package com.chelz.foodorganizer.screens.profile.presentation.domain
 
-import com.chelz.foodorganizer.screens.foodList.data.LocalFoodDataSource
-import com.chelz.foodorganizer.screens.foodList.data.LocalStatisticsDataSource
+import com.chelz.foodorganizer.screens.foodList.domain.LocalFoodDataSource
+import com.chelz.foodorganizer.screens.foodList.domain.LocalStatisticsDataSource
 import com.chelz.foodorganizer.screens.foodList.data.dao.FoodEntity
 import com.chelz.foodorganizer.screens.foodList.data.dao.PlacementEntity
 import com.chelz.foodorganizer.screens.foodList.data.dao.StatisticsEntity
-import com.chelz.foodorganizer.screens.recipes.data.LocalRecipesDataSource
+import com.chelz.foodorganizer.screens.recipes.domain.LocalRecipesDataSource
 import com.chelz.foodorganizer.screens.recipes.data.dao.RecipeEntity
 import com.chelz.foodorganizer.screens.recipes.data.dao.RecipeTypeEntity
-import com.chelz.foodorganizer.screens.toBuyList.data.LocalToBuyListDataSource
+import com.chelz.foodorganizer.screens.toBuyList.domain.LocalToBuyListDataSource
 import com.chelz.foodorganizer.screens.toBuyList.data.dao.ToBuyListEntity
 import kotlinx.coroutines.flow.Flow
 
